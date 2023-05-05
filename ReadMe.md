@@ -63,8 +63,6 @@ Here is a latching motor example:
 ```forth
 (start)
 ||
-||- -| OVERHEAT |- -( TMR )- -||
-||
 ||- -| START |-        -+
 ||- -| MOTOR-MERKER |- -+- -|/ STOP |- -( MOTOR-MERKER )- -||
 ||
