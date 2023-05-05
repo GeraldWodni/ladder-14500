@@ -55,3 +55,21 @@ Hint: this is a Standard Program, feel free to use your favourite Forth system l
 
 ## Ladder
 
+The [Forth-ASCII-ladder-logic](https://github.com/GeraldWodni/ladder) has its own repository, and is adopted for this repo.
+The ladder logic directly uses the above assembler to generate code.
+
+Here is a latching motor example:
+
+```forth
+(start)
+||
+||- -| OVERHEAT |- -( TMR )- -||
+||
+||- -| START |-        -+
+||- -| MOTOR-MERKER |- -+- -|/ STOP |- -( MOTOR-MERKER )- -||
+||
+||- -| MOTOR-MERKER |- -( MOTOR )- -||
+||
+(end)
+```
+
