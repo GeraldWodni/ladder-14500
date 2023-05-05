@@ -7,13 +7,13 @@ variable pc
 
 : (start) ( -- )
     \ *G reset assembler
-    prog /prog $FF fill
-    -1 pc ! ;
+    prog /prog $00 fill
+    0 pc ! ;
 
 : (end) ( -- )
     \ *G write progbuffer
     cr pc @ . ." bytes" cr
-    prog pc @ 1+ dump
+    prog pc @ dump
 
     s" out.hex" w/o create-file throw >r
     prog /prog r@ write-file throw
@@ -23,9 +23,7 @@ variable pc
 \ IO Map
 : iomap ( address <parse-name> -- )
     create ,
-    does> @
-    prog pc @ + >r
-    r@ c@ or r> c! ;
+    does> @ prog pc @ + c! ;
 
 $00 iomap spr0  \ scratch pad ram
 $10 iomap spr1
@@ -54,23 +52,25 @@ $F0 iomap TMR
 \ Opcodes
 : opcode ( opcode <parse-name> -- )
     create ,
-    does> 1 pc +!
-        @ prog pc @ + c! ;
+    does> 
+        @ prog pc @ + >r
+        r@ c@ or dup hex. r> c!
+        1 pc +!  ;
 
-$0 opcode NOPO \ No change in registers. R ~ R. FlGO +-S1..
-$1 opcode LD   \ Load Result Reg. Data -+ RR
-$2 opcode LDC  \ Load Complement Data -+- RR
-$3 opcode AND  \ logical AND. RR • 0 ..... RR
-$4 opcode ANDC \ logical AND Compl.RR· 0 ..... RR
-$5 opcode OR   \ logical OR. RR + 0'" RR
-$6 opcode ORC  \ logical OR Compl. RR +0'" RR
-$7 opcode XNOR \ Exclusive NOR. If RR = 0, RR +-1
-$8 opcode STO  \ Store. RR -+ Data Pin, Write +-1
-$9 opcode STOC \ Store Compl. RR -+ Data Pin, Write +-1
-$A opcode IEN  \ Input Enable. 0 -+IEN Reg.
-$B opcode OEN  \ Output Enable. 0'" OEN Reg.
-$C opcode JMP  \ Jump. JMP Flag <- .n..
-$D opcode RTN  \ Return. RTN Flag +-Jl.. Skip next Inst.
-$E opcode SKZ  \ Skip next instruction if RR = 0
-$F opcode NOPF \ No change in Registers RR -+RR, FLGF
+$0 opcode NOPO, \ No change in registers. R ~ R. FlGO +-S1..
+$1 opcode LD,   \ Load Result Reg. Data -+ RR
+$2 opcode LDC,  \ Load Complement Data -+- RR
+$3 opcode AND,  \ logical AND. RR • 0 ..... RR
+$4 opcode ANDC, \ logical AND Compl.RR· 0 ..... RR
+$5 opcode OR,   \ logical OR. RR + 0'" RR
+$6 opcode ORC,  \ logical OR Compl. RR +0'" RR
+$7 opcode XNOR, \ Exclusive NOR. If RR = 0, RR +-1
+$8 opcode STO,  \ Store. RR -+ Data Pin, Write +-1
+$9 opcode STOC, \ Store Compl. RR -+ Data Pin, Write +-1
+$A opcode IEN,  \ Input Enable. 0 -+IEN Reg.
+$B opcode OEN,  \ Output Enable. 0'" OEN Reg.
+$C opcode JMP,  \ Jump. JMP Flag <- .n..
+$D opcode RTN,  \ Return. RTN Flag +-Jl.. Skip next Inst.
+$E opcode SKZ,  \ Skip next instruction if RR = 0
+$F opcode NOPF, \ No change in Registers RR -+RR, FLGF
 
