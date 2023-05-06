@@ -13,7 +13,7 @@ include ../ladder.4th
 ||- -| OVERHEAT |- -( TMR )- -||
 ||
 ||- -| START |-        -+
-||- -| MOTOR-MERKER |- -+- -|/ STOP |- -( MOTOR-MERKER )- -||
+||- -| MOTOR-MERKER |- -+- -|/ STOP |- -|/ TMR |- -( MOTOR-MERKER )- -||
 ||
 ||- -| MOTOR-MERKER |- -( MOTOR )- -||
 ||
