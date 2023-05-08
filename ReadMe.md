@@ -53,6 +53,13 @@ gforth <filename.4th> && cat out.hex > /dev/ttyUSB0
 ```
 Hint: this is a Standard Program, feel free to use your favourite Forth system like vfxforth, swiftforth, of whatever floats you bits.
 
+## Disassembler
+If you want to inspect compiled code, use `dasm.4th`:
+
+```forth
+s" out.hex" dasm-file
+```
+
 ## Ladder
 
 The [Forth-ASCII-ladder-logic](https://github.com/GeraldWodni/ladder) has its own repository, and is adopted for this repo.
@@ -70,4 +77,3 @@ Here is a latching motor example:
 ||
 (end)
 ```
-
